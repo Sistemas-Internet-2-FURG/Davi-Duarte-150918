@@ -17,9 +17,9 @@ Python (versão 3.6 ou superior)
 3- cd ..
 4- cd ..
 
-3- pip install flask flask_sqlalchemy
+5- pip install flask flask_sqlalchemy
 
 
-4- flask run
+6- flask run
 
 
