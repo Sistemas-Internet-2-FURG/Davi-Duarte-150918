@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Configuração do cabeçalho da página -->
+    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres para UTF-8 -->
+    <title>CRUD de Alunos e Turmas</title> <!-- Título da página, exibido na aba do navegador -->
+    <!-- Link para o CSS do Bootstrap para estilização -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Container principal para centralizar o conteúdo e aplicar margens -->
+    <div class="container mt-4">
+        <h1>Sistema de Cadastro</h1> <!-- Título principal da página -->
+
+        <!-- Exibir mensagens de flash para o usuário -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <!-- Itera sobre as mensagens de flash e exibe cada uma -->
+            {% for category, message in messages %}
+              <!-- Define a classe do alerta com base na categoria da mensagem (ex: success, error) -->
+              <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        <!-- Seção de Turmas -->
+        <h2>Turmas</h2>
+        <!-- Botão para adicionar uma nova turma -->
+        <a href="{{ url_for('manage_turmas') }}" class="btn btn-primary">Adicionar Turma</a>
+        <!-- Lista de turmas -->
+        <ul>
+            {% for turma in turmas %}
+                <li>
+                    <!-- Exibe o nome da turma e o limite de vagas -->
+                    {{ turma.nome }} (Limite de Vagas: {{ turma.limite_vagas }})
+                    <!-- Botão para editar a turma -->
+                    <a href="{{ url_for('edit_turma', id=turma.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <!-- Botão para excluir a turma -->
+                    <a href="{{ url_for('delete_turma', id=turma.id) }}" class="btn btn-danger btn-sm">Excluir</a>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <!-- Seção de Alunos -->
+        <h2>Alunos</h2>
+        <!-- Botão para adicionar um novo aluno -->
+        <a href="{{ url_for('manage_alunos') }}" class="btn btn-primary">Adicionar Aluno</a>
+        <!-- Lista de alunos -->
+        <ul>
+            {% for aluno in alunos %}
+                <li>
+                    <!-- Exibe o nome do aluno, matrícula e a turma associada -->
+                    {{ aluno.nome }} (Matrícula: {{ aluno.matricula }}) - Turma: {{ aluno.turma.nome }}
+                    <!-- Botão para editar o aluno -->
+                    <a href="{{ url_for('edit_aluno', id=aluno.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <!-- Botão para excluir o aluno -->
+                    <a href="{{ url_for('delete_aluno', id=aluno.id) }}" class="btn btn-danger btn-sm">Excluir</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

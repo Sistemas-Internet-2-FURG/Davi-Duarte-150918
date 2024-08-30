@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadados da página -->
+    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres para UTF-8 -->
+    <title>Editar Aluno</title> <!-- Título da página, exibido na aba do navegador -->
+</head>
+<body>
+    <h1>Editar Aluno</h1> <!-- Título da seção -->
+    
+    <!-- Exibir mensagens de flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <!-- Itera sobre as mensagens de flash e exibe cada uma -->
+        {% for category, message in messages %}
+          <!-- Define a classe do alerta com base na categoria da mensagem (ex: success, error) -->
+          <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <!-- Formulário para editar um aluno existente -->
+    <form method="POST"> <!-- Método POST envia os dados do formulário ao servidor -->
+        <!-- Campo de entrada para o nome do aluno, preenchido com o valor atual -->
+        Nome: <input type="text" name="nome" value="{{ aluno.nome }}"><br>
+        
+        <!-- Campo de entrada para a matrícula do aluno, preenchido com o valor atual -->
+        Matrícula: <input type="text" name="matricula" value="{{ aluno.matricula }}"><br>
+        
+        <!-- Campo de seleção para escolher a turma do aluno -->
+        Turma: 
+        <select name="turma_id">
+            {% for turma in turmas %}
+                <!-- Exibe cada turma disponível e marca como selecionada a turma atual do aluno -->
+                <option value="{{ turma.id }}" {% if aluno.turma_id == turma.id %}selected{% endif %}>{{ turma.nome }}</option>
+            {% endfor %}
+        </select><br>
+        
+        <!-- Botão para submeter o formulário e atualizar os dados do aluno -->
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <!-- Link para voltar à página inicial -->
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadados da página -->
+    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres para UTF-8 -->
+    <title>Adicionar Turma</title> <!-- Título da página, exibido na aba do navegador -->
+</head>
+<body>
+    <h1>Adicionar Nova Turma</h1> <!-- Título da seção -->
+
+    <!-- Formulário para adicionar uma nova turma -->
+    <form method="POST"> <!-- Método POST envia os dados do formulário ao servidor -->
+        <!-- Campo de entrada para o nome da turma -->
+        Nome: <input type="text" name="nome"><br>
+        
+        <!-- Campo de entrada para o limite de vagas da turma -->
+        Limite de Vagas: <input type="number" name="limite_vagas"><br>
+        
+        <!-- Botão para submeter o formulário e salvar a nova turma -->
+        <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Link para voltar à página inicial -->
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

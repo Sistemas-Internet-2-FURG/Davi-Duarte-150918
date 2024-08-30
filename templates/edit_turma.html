@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadados da página -->
+    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres para UTF-8 -->
+    <title>Editar Turma</title> <!-- Título da página, exibido na aba do navegador -->
+</head>
+<body>
+    <h1>Editar Turma</h1> <!-- Título da seção -->
+    
+    <!-- Exibir mensagens de flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <!-- Itera sobre as mensagens de flash e exibe cada uma -->
+        {% for category, message in messages %}
+          <!-- Define a classe do alerta com base na categoria da mensagem (ex: success, error) -->
+          <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <!-- Formulário para editar uma turma existente -->
+    <form method="POST"> <!-- Método POST envia os dados do formulário ao servidor -->
+        <!-- Campo de entrada para o nome da turma, preenchido com o valor atual -->
+        Nome: <input type="text" name="nome" value="{{ turma.nome }}"><br>
+        
+        <!-- Campo de entrada para o limite de vagas da turma, preenchido com o valor atual -->
+        Limite de Vagas: <input type="number" name="limite_vagas" value="{{ turma.limite_vagas }}"><br>
+        
+        <!-- Botão para submeter o formulário e atualizar os dados da turma -->
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <!-- Link para voltar à página inicial -->
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadados da página -->
+    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres para UTF-8 -->
+    <title>Adicionar Aluno</title> <!-- Título da página, exibido na aba do navegador -->
+</head>
+<body>
+    <h1>Adicionar Novo Aluno</h1> <!-- Título da seção -->
+    
+    <!-- Exibir mensagens de flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <!-- Itera sobre as mensagens de flash e exibe cada uma -->
+        {% for category, message in messages %}
+          <!-- Define a classe do alerta com base na categoria da mensagem (ex: success, error) -->
+          <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <!-- Formulário para adicionar um novo aluno -->
+    <form method="POST"> <!-- Método POST envia os dados do formulário ao servidor -->
+        <!-- Campo de entrada para o nome do aluno -->
+        Nome: <input type="text" name="nome"><br>
+        
+        <!-- Campo de entrada para a matrícula do aluno -->
+        Matrícula: <input type="text" name="matricula"><br>
+        
+        <!-- Campo de seleção para escolher a turma do aluno -->
+        Turma: 
+        <select name="turma_id">
+            {% for turma in turmas %}
+                <!-- Exibe cada turma disponível como uma opção -->
+                <option value="{{ turma.id }}">{{ turma.nome }}</option>
+            {% endfor %}
+        </select><br>
+        
+        <!-- Botão para submeter o formulário e salvar o novo aluno -->
+        <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Link para voltar à página inicial -->
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>
