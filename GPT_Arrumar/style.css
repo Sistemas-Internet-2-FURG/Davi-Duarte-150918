@@ -1,0 +1,43 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#taskInput {
+    padding: 10px;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+#taskList {
+    list-style-type: none;
+    padding: 0;
+    width: 250px;
+}
+
+.task {
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
