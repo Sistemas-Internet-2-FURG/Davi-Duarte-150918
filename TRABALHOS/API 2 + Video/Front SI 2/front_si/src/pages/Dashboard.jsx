@@ -7,6 +7,7 @@ import TurmaModal from '../Modals/TurmaModal';
 import AlunoModal from '../Modals/AlunoModal';
 import EditTurmaModal from '../Modals/EditTurmaModal';
 import '../CSS/Dashboard.css';
+import EditAlunoModal from '../Modals/editaluno';
 
 function Dashboard() {
   const [turmas, setTurmas] = useState([]);
@@ -26,7 +27,9 @@ function Dashboard() {
   const [isTurmaModalOpen, setIsTurmaModalOpen] = useState(false);
   const [isAlunoModalOpen, setIsAlunoModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  const [editAlunoForm, setEditAlunoForm] = useState(null);
+  const [isEditAlunoModalOpen, setIsEditAlunoModalOpen] = useState(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +63,54 @@ function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
+  };
+  const handleEditAluno = (aluno) => {
+    setEditAlunoForm(aluno);
+    setIsEditAlunoModalOpen(true);
+  };
+  const handleUpdateAluno = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      handleLogout();
+      return;
+    }
+  
+    try {
+      const response = await axios.put(`http://localhost:3001/api/alunos/${editAlunoForm.id}`, editAlunoForm, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  
+      setAlunos(alunos.map(aluno => (aluno.id === response.data.id ? response.data : aluno)));
+      setIsEditAlunoModalOpen(false);
+    } catch (error) {
+      console.error('Erro ao atualizar aluno:', error);
+      alert('Erro ao atualizar aluno. Tente novamente.');
+    }
+  };
+  
+  const handleDeleteAluno = async (id) => {
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      handleLogout();
+      return;
+    }
+  
+    const confirmDelete = window.confirm('Tem certeza que deseja excluir este aluno?');
+    if (!confirmDelete) return;
+  
+    try {
+      await axios.delete(`http://localhost:3001/api/alunos/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  
+      setAlunos(alunos.filter(aluno => aluno.id !== id));
+    } catch (error) {
+      console.error('Erro ao deletar aluno:', error);
+      alert('Erro ao deletar aluno. Tente novamente.');
+    }
   };
 
   const handleTurmaSubmit = async (e) => {
@@ -120,7 +171,29 @@ function Dashboard() {
       handleLogout();
     }
   };
-
+  const handleDeleteTurma = async (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      handleLogout();
+      return;
+    }
+  
+    const confirmDelete = window.confirm('Tem certeza que deseja excluir esta turma?');
+    if (!confirmDelete) return;
+  
+    try {
+      await axios.delete(`http://localhost:3001/api/turmas/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  
+      // Remove a turma deletada do estado
+      setTurmas(turmas.filter(turma => turma.id !== id));
+    } catch (error) {
+      console.error('Erro ao deletar turma:', error);
+      alert('Erro ao deletar turma. Tente novamente.');
+    }
+  };
+  
   const handleEditTurma = (turma) => {
     setEditTurmaForm(turma);
     setIsEditModalOpen(true);
@@ -147,7 +220,7 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h2 className="dashboard-title">Dashboard</h2>
+        
         <div className="settings-container">
           <FontAwesomeIcon
             icon={faCog}
@@ -179,8 +252,12 @@ function Dashboard() {
             <li key={turma.id} className="post-item">
               Código: {turma.codigo}, Disciplina: {turma.nomeDisciplina}, Turma: {turma.turma}, Vagas: {turma.vagas}, Dia: {turma.diaSemana}, Início: {turma.horarioInicio}, Fim: {turma.horarioFim}
               <button onClick={() => handleEditTurma(turma)} className="edit-button">
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
+  <FontAwesomeIcon icon={faEdit} />
+</button>
+<button onClick={() => handleDeleteTurma(turma.id)} className="delete-button">
+  🗑️
+</button>
+
             </li>
           ))}
         </ul>
@@ -192,8 +269,17 @@ function Dashboard() {
         <ul className="posts-list">
           {alunos.map(aluno => (
             <li key={aluno.id} className="post-item">
-              Matrícula: {aluno.matricula}, Nome: {aluno.nome}
-            </li>
+  Matrícula: {aluno.matricula}, Nome: {aluno.nome}
+  
+  <button onClick={() => handleEditAluno(aluno)} className="edit-button">
+  <FontAwesomeIcon icon={faEdit} />
+  </button>
+
+  <button onClick={() => handleDeleteAluno(aluno.id)} className="delete-button">
+    🗑️
+  </button>
+</li>
+
           ))}
         </ul>
       </div>
@@ -224,7 +310,17 @@ function Dashboard() {
         editTurmaForm={editTurmaForm}
         setEditTurmaForm={setEditTurmaForm}
       />
+
+<EditAlunoModal
+  isOpen={isEditAlunoModalOpen && editAlunoForm !== null}
+  onRequestClose={() => setIsEditAlunoModalOpen(false)}
+  onSubmit={handleUpdateAluno}
+  editAlunoForm={editAlunoForm}
+  setEditAlunoForm={setEditAlunoForm}
+/>
+
     </div>
+    
   );
 }
 

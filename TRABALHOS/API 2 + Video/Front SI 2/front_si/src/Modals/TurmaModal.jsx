@@ -1,4 +1,3 @@
-// components/TurmaModal.jsx
 import React from 'react';
 import Modal from 'react-modal';
 
@@ -26,6 +25,7 @@ const TurmaModal = ({ isOpen, onRequestClose, onSubmit, turmaForm, setTurmaForm 
         <input type="text" value={turmaForm.diaSemana} onChange={(e) => setTurmaForm({ ...turmaForm, diaSemana: e.target.value })} placeholder="Dia da Semana" required className="input" />
         <input type="time" value={turmaForm.horarioInicio} onChange={(e) => setTurmaForm({ ...turmaForm, horarioInicio: e.target.value })} placeholder="Horário de Início" required className="input" />
         <input type="time" value={turmaForm.horarioFim} onChange={(e) => setTurmaForm({ ...turmaForm, horarioFim: e.target.value })} placeholder="Horário de Fim" required className="input" />
+
         <button type="submit" className="button">Cadastrar Turma</button>
       </form>
     </Modal>
